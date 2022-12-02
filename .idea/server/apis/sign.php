@@ -10,6 +10,9 @@ if(!$user->name){
     sendResponse(400, [] , 'Name Required !');
 }else if(!$user->email){
     sendResponse(400, [] , 'Email Required !');
+}else if(!$user->password){
+    sendResponse(400, [] , 'password Required !');
+
 }else{
     //method doEncrypt() of encipher.php which convert plain text to encrypted text.
     $password = doEncrypt($user->password);
@@ -17,9 +20,13 @@ if(!$user->name){
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql="INSERT INTO user(name, email, password)";
-        $sql .= "VALUES ('".$user->name."','".$user->email."','";
-        $sql .= $password."')";
+        $sql="INSERT INTO user(username, password,email,nickname,mobile,create_date,modify_date,birth,image,gender)";
+        $sql .= "VALUES ('".$user->username."','".$user->password."','";
+        $sql .= $user->email."','".$user->nickname."','";
+        $sql .= $user -> mobile."','".$user->NOW()."','".$user->NOW()."','";
+        $sql .= $user -> birth."','".$user->image."','".$user->gender;"';
+        $sql .= )";
+
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.
         if ($result) {

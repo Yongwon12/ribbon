@@ -7,7 +7,7 @@ if($conn==null){
     //send response if connection error occurred.
     sendResponse(500,$conn,'Server Connection Error');
 }else{
-    $sql = "SELECT id, name, email,password FROM user";
+    $sql = "SELECT id, name, email,nickname,gender,birth FROM user";
     $result = $conn->query($sql);
 
     //check if user list available
@@ -18,7 +18,9 @@ if($conn==null){
                 "id" =>  $row["id"],
                 "name" => $row["name"],
                 "email" => $row["email"],
-                "password" => $row["password"],
+                "nickname" => $row["nickname"],
+                "gender" => $row["gender"],
+                "birth" => $row["birth"],
             );
             array_push($users,$user);
         }
