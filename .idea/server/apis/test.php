@@ -6,26 +6,22 @@ include_once('../common/encipher.php');
 $user = json_decode(file_get_contents("php://input"));
 
 //validation whether user data is having name or not. similarly email, password etc.
-if(!$user->name){
-    sendResponse(400, [] , 'Name Required !');
-}else if(!$user->email){
-    sendResponse(400, [] , 'Email Required !');
-}else if(!$user->password){
-    sendResponse(400, [] , 'password Required !');
 
+if(!$user->snsid){
+    sendResponse(400, [] , 'Email Required !');
 }else{
     //method doEncrypt() of encipher.php which convert plain text to encrypted text.
-    $password = doEncrypt($user->password);
     $conn=getConnection();
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql="INSERT INTO user(username, password,email,nickname,
-                 mobile,create_date,modify_date,birth,image,gender)
-         VALUES ('".$user->username."','".$user->password."','"
-        .$user->email."','".$user->nickname."','" .$user -> mobile."','"
-             .$user->create_date."','".$user->modify_date."','"
-        .$user -> birth."','".$user->image."','".$user->gender."')";
+        $sql="INSERT INTO test(snsid,snstype,snsname,snsprofile,
+                 snsconnectdate) 
+                VALUES ('".$user->snsid."','".$user->snstype."','"
+            .$user->snsname."','"
+            .$user->snsprofile."','"
+            .$user -> snsconnectdate."')";
+
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.
