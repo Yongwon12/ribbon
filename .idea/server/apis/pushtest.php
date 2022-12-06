@@ -23,9 +23,9 @@ if(!$user->username){
         $sql="INSERT INTO user(username, password,email,nickname,
                  mobile,create_date,modify_date,birth,image,gender)
          VALUES ('".$user->username."','".$user->password."','"
-        .$user->email."','".$user->nickname."','" .$user -> mobile."','"
-             .$user->create_date."','".$user->modify_date."','"
-        .$user -> birth."','".$user->image."','".$user->gender."')";
+            .$user->email."','".$user->nickname."','" .$user -> mobile."','"
+            .$user->create_date."','".$user->modify_date."','"
+            .$user -> birth."','".$user->image."','".$user->gender."')";
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.

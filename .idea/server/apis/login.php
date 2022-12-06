@@ -10,6 +10,7 @@ $conn = mysqli_connect("172.30.1.24", "yongwon2", "Dyddnjs3401!", 'ribbonProject
 $user = json_encode(file_get_contents("php://input"));
 //validation whether user data is having name or not. similarly email, password etc.
 $sql = "SELECT * FROM user where id=3";
+
 $result = mysqli_query($conn,$sql);
 $data = array();
 if ($result)
@@ -21,6 +22,7 @@ if ($result)
             'password'=>$row[2],'email'=>$row[3],'nickname'=>$row[4],'mobile'=>$row[5],
             'create_date'=>$row[6], 'modify_date'=>$row[7],'birth'=>$row[8],
             'image'=>$row[9],'gender'=>$row[10]));
+
     }
     $json = json_encode(array("user" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
         echo $json;

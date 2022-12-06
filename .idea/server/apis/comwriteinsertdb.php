@@ -3,25 +3,24 @@ include_once('../common/include.php');
 include_once('../common/encipher.php');
 //method file_get_contents() get all data send via API call.
 //json_decode() decodes data as json and assign to variable $user.
-$user = json_decode(file_get_contents("php://input"));
+$comwrites = json_decode(file_get_contents("php://input"));
 
 //validation whether user data is having name or not. similarly email, password etc.
-
-if(!$user->snsid){
+if(!$comwrites->title){
+    sendResponse(400, [] , 'Name Required !');
+}else if(!$comwrites->description){
     sendResponse(400, [] , 'Email Required !');
-}else{
+}
+else{
     //method doEncrypt() of encipher.php which convert plain text to encrypted text.
     $conn=getConnection();
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql="INSERT INTO test(snsid,snstype,snsname,snsprofile,
-                 snsconnectdate) 
-                VALUES ('".$user->snsid."','".$user->snstype."','"
-            .$user->snsname."','"
-            .$user->snsprofile."','"
-            .$user -> snsconnectdate."')";
-
+        $sql="INSERT INTO boards(title,description,titleimage,
+                 categoryid,writedate)
+         VALUES ('".$comwrites->title."','".$comwrites->description."','"
+        .$comwrites->titleimage."','".$comwrites->categoryid."','" .$comwrites -> writedate."')";
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.
