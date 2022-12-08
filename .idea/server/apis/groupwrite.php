@@ -3,13 +3,13 @@ include_once('../common/include.php');
 include_once('../common/encipher.php');
 //method file_get_contents() get all data send via API call.
 //json_decode() decodes data as json and assign to variable $user.
-$comwrites = json_decode(file_get_contents("php://input"));
+$group = json_decode(file_get_contents("php://input"));
 
 //validation whether user data is having name or not. similarly email, password etc.
-if(!$comwrites->title){
-    sendResponse(400, [] , 'Name Required !');
-}else if(!$comwrites->description){
-    sendResponse(400, [] , 'Email Required !');
+if(!$group->id){
+    sendResponse(400, [] , 'id Required !');
+}else if(!$group->userid){
+    sendResponse(400, [] , 'user Required !');
 }
 else{
     //method doEncrypt() of encipher.php which convert plain text to encrypted text.
@@ -17,10 +17,13 @@ else{
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql="INSERT INTO boards(title,description,titleimage,
-                 categoryid,writedate)
-         VALUES ('".$comwrites->title."','".$comwrites->description."','"
-        .$comwrites->titleimage."','".$comwrites->categoryid."','" .$comwrites -> writedate."')";
+        $sql="INSERT INTO groupwrite(id,local,title,line,description,
+                 peoplenum,gender,minage,titleimage,userid,maxage,writedate)
+         VALUES ('".$group->id."','".$group->local."','"
+        .$group->title."','".$group->line."','" .$group -> description."','"
+            .$group->peoplenum."','".$group->gender."','" .$group -> minage."','"
+            .$group->titleimage."','".$group->userid."','" .$group -> maxage."','"
+            .$group->writedate."')";
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.

@@ -3,29 +3,28 @@ include_once('../common/include.php');
 include_once('../common/encipher.php');
 //method file_get_contents() get all data send via API call.
 //json_decode() decodes data as json and assign to variable $user.
-$user = json_decode(file_get_contents("php://input"));
+$board = json_decode(file_get_contents("php://input"));
 
 //validation whether user data is having name or not. similarly email, password etc.
-if(!$user->username){
-    sendResponse(400, [] , 'Name Required !');
-}else if(!$user->email){
-    sendResponse(400, [] , 'Email Required !');
-}else if(!$user->password){
-    sendResponse(400, [] , 'password Required !');
+if(!$board->id){
+    sendResponse(400, [] , 'id Required !');
+}else if(!$board->userid){
+    sendResponse(400, [] , 'userid Required !');
+}else if(!$board->title){
+    sendResponse(400, [] , 'title Required !');
 
 }else{
     //method doEncrypt() of encipher.php which convert plain text to encrypted text.
-    $password = doEncrypt($user->password);
+
     $conn=getConnection();
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql="INSERT INTO user(username, password,email,nickname,
-                 mobile,create_date,modify_date,birth,image,gender)
-         VALUES ('".$user->username."','".$user->password."','"
-            .$user->email."','".$user->nickname."','" .$user -> mobile."','"
-            .$user->create_date."','".$user->modify_date."','"
-            .$user -> birth."','".$user->image."','".$user->gender."')";
+        $sql="INSERT INTO boardwrite(id, userid,title,description,
+                 img,writedate)
+         VALUES ('".$board->id."','".$board->userid."','"
+            .$board->title."','".$board->description."','" .$board -> img."','"
+            .$board->writedate."')";
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.
