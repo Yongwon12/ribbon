@@ -21,10 +21,10 @@ if(!$board->id){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
         $sql="INSERT INTO boardwrite(id, userid,title,description,
-                 img,writedate)
+                 img,writedate,profileimage)
          VALUES ('".$board->id."','".$board->userid."','"
             .$board->title."','".$board->description."','" .$board -> img."','"
-            .$board->writedate."')";
+            .$board->writedate."','".$board->profileimage."')";
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.

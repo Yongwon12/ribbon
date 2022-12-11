@@ -9,7 +9,7 @@ $group = json_decode(file_get_contents("php://input"));
 if(!$group->id){
     sendResponse(400, [] , 'id Required !');
 }else if(!$group->userid){
-    sendResponse(400, [] , 'user Required !');
+    sendResponse(400, [] , 'userid Required !');
 }
 else{
     //method doEncrypt() of encipher.php which convert plain text to encrypted text.
@@ -18,12 +18,12 @@ else{
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
         $sql="INSERT INTO groupwrite(id,local,title,line,description,
-                 peoplenum,gender,minage,titleimage,userid,maxage,writedate)
+                 peoplenum,gender,minage,titleimage,userid,maxage,writedate,peoplenownum)
          VALUES ('".$group->id."','".$group->local."','"
         .$group->title."','".$group->line."','" .$group -> description."','"
             .$group->peoplenum."','".$group->gender."','" .$group -> minage."','"
             .$group->titleimage."','".$group->userid."','" .$group -> maxage."','"
-            .$group->writedate."')";
+            .$group->writedate."','".$group->peoplenownum."')";
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.

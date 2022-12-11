@@ -7,11 +7,9 @@ $used = json_decode(file_get_contents("php://input"));
 
 //validation whether user data is having name or not. similarly email, password etc.
 if(!$used->id){
-    sendResponse(400, [] , 'Name Required !');
-}else if(!$used->local){
-    sendResponse(400, [] , 'Email Required !');
-}else if(!$used->password){
-    sendResponse(400, [] , 'password Required !');
+    sendResponse(400, [] , 'id Required !');
+}else if(!$used->userid){
+    sendResponse(400, [] , 'userid Required !');
 
 }else{
     //method doEncrypt() of encipher.php which convert plain text to encrypted text.
@@ -19,10 +17,9 @@ if(!$used->id){
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql="INSERT INTO usedwrite(id, local,title,description,
-                 usedimage,price,userid,writedate)
-         VALUES ('".$used->id."','".$used->local."','"
-            .$used->title."','".$used->description."','" .$used -> usedimage."','"
+        $sql="INSERT INTO usedwrite(id,local,title,description,usedimage,price,userid,writedate)
+         VALUES ('".$used->id."','".$used->local."','".$used->title."','"
+            .$used->description."','" .$used -> usedimage."','"
             .$used->price."','".$used->userid."','"
             .$used -> writedate."')";
 

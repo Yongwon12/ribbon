@@ -1,7 +1,7 @@
 <?php
 function getConnection()
 {
-    $host = '10.20.21.50';
+    $host = '192.168.219.104';
     $db_name = 'ribbonProject';
     $username = 'yongwon2';
     $password = 'Dyddnjs3401!';

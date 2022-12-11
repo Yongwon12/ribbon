@@ -7,7 +7,7 @@ $individual = json_decode(file_get_contents("php://input"));
 
 //validation whether user data is having name or not. similarly email, password etc.
 if(!$individual->id){
-    sendResponse(400, [] , 'Name Required !');
+    sendResponse(400, [] , 'id Required !');
 }else if(!$individual->userid){
     sendResponse(400, [] , 'Email Required !');
 }else if(!$individual->local){
@@ -20,11 +20,11 @@ if(!$individual->id){
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql="INSERT INTO groupwrite(id,local,date,title,description,
-                 gender,titleimage,userid,writedate,maxage,minage)
+        $sql="INSERT INTO individualwrite(id,local,date,title,description,
+                 gender,userimage,userid,writedate,maxage,minage)
          VALUES ('".$individual->id."','".$individual->local."','"
             .$individual->date."','".$individual->title."','" .$individual -> description."','"
-            .$individual->gender."','".$individual->titleimage."','" .$individual -> userid."','"
+            .$individual->gender."','".$individual->userimage."','" .$individual -> userid."','"
             .$individual->writedate."','".$individual->maxage."','" .$individual -> minage."')";
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.
