@@ -17,11 +17,11 @@ if(!$used->id){
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql="INSERT INTO usedwrite(id,local,title,description,usedimage,price,userid,writedate)
+        $sql="INSERT INTO usedwrite(id,local,title,description,usedimage,price,userid,writedate,nickname)
          VALUES ('".$used->id."','".$used->local."','".$used->title."','"
             .$used->description."','" .$used -> usedimage."','"
             .$used->price."','".$used->userid."','"
-            .$used -> writedate."')";
+            .$used -> writedate."','" .$used -> nickname."')";
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.

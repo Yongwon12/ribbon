@@ -21,11 +21,11 @@ if(!$individual->id){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
         $sql="INSERT INTO individualwrite(id,local,date,title,description,
-                 gender,userimage,userid,writedate,maxage,minage)
+                 gender,userimage,userid,writedate,maxage,minage,nickname)
          VALUES ('".$individual->id."','".$individual->local."','"
             .$individual->date."','".$individual->title."','" .$individual -> description."','"
             .$individual->gender."','".$individual->userimage."','" .$individual -> userid."','"
-            .$individual->writedate."','".$individual->maxage."','" .$individual -> minage."')";
+            .$individual->writedate."','".$individual->maxage."','" .$individual -> minage."','" .$individual -> nickname."')";
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.
         if ($result) {
