@@ -1,9 +1,9 @@
 <?php
 
-include_once('../common/header.php');
-include_once('../common/response.php');
-include_once('../common/encipher.php');
-$conn = mysqli_connect("192.168.219.104", "yongwon2", "Dyddnjs3401!", 'ribbonProject');
+
+basename(include_once('../common/include.php'));
+basename(include_once('../common/encipher.php'));
+$conn=getConnection();
 
 //method file_get_contents() get all data send via API call.
 //json_decode() decodes data as json and assign to variable $user.

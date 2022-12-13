@@ -1,5 +1,7 @@
 <?php
-$conn = mysqli_connect("192.168.0.3", "yongwon2", "Dyddnjs3401!", 'ribbonProject');
+basename(include_once('../common/include.php'));
+basename(include_once('../common/encipher.php'));
+$conn=getConnection();
 
 //method file_get_contents() get all data send via API call.
 //json_decode() decodes data as json and assign to variable $user.
@@ -18,7 +20,7 @@ array_push($data, array('id' => $row[0], 'local' => $row[1],
 
 }
 $json = json_encode(array("groupwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
-echo $json;
+    echo $json;
 }
 else
 {

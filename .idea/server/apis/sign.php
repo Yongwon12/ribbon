@@ -1,6 +1,7 @@
 <?php
-include_once('../common/include.php');
-include_once('../common/encipher.php');
+basename(include_once('../common/include.php'));
+basename(include_once('../common/encipher.php'));
+
 //method file_get_contents() get all data send via API call.
 //json_decode() decodes data as json and assign to variable $user.
 $user = json_decode(file_get_contents("php://input"));

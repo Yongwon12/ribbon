@@ -1,11 +1,6 @@
 <?php
 
-include_once('../common/header.php');
-include_once('../common/response.php');
-include_once('../common/encipher.php');
-
-
 $sql = "SELECT * FROM boardwrite where id = 5";
 
-require_once('../common/databaseboard.php');
+require_once('../common/databaseboard5.php');
 ?>

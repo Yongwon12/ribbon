@@ -1,4 +1,5 @@
 <?php
+
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 $conn=getConnection();
@@ -19,7 +20,7 @@ if ($result)
             'title'=>$row[2],'description'=>$row[3],'img'=>$row[4],'writedate'=>$row[5],'profileimage'=>$row[6],'nickname'=>$row[7]));
 
     }
-    $json = json_encode(array("boardwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+    $json = json_encode(array("boardwrite2" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
     echo $json;
 }
 else
