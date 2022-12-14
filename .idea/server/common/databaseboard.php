@@ -5,7 +5,7 @@ $conn=getConnection();
 
 //method file_get_contents() get all data send via API call.
 //json_decode() decodes data as json and assign to variable $user.
-$user = json_encode(file_get_contents("php://input"));
+$board = json_encode(file_get_contents("php://input"));
 //validation whether user data is having name or not. similarly email, password etc.
 
 $result = mysqli_query($conn,$sql);
@@ -16,9 +16,10 @@ if ($result)
     {
         // or select*from 테이블 where id = 3 and userid = 3 이런식으로 불러오기 + 배열형식
         array_push($data, array('id' => $row[0], 'userid' => $row[1],
-            'title'=>$row[2],'description'=>$row[3],'img'=>$row[4],'writedate'=>$row[5],'profileimage'=>$row[6],'nickname'=>$row[7]));
+            'title'=>$row[2],'description'=>$row[3],'img'=>$row[4],'writedate'=>$row[5],'profileimage'=>$row[6],'nickname'=>$row[7],'boardid'=>$row[8]));
 
     }
+
     $json = json_encode(array("boardwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
     echo $json;
 }

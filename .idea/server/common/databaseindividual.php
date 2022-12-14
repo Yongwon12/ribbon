@@ -6,7 +6,7 @@ $conn=getConnection();
 
 //method file_get_contents() get all data send via API call.
 //json_decode() decodes data as json and assign to variable $user.
-$user = json_encode(file_get_contents("php://input"));
+$individual = json_encode(file_get_contents("php://input"));
 //validation whether user data is having name or not. similarly email, password etc.
 
 $result = mysqli_query($conn,$sql);
@@ -17,7 +17,7 @@ if ($result)
     {
         array_push($data, array('id' => $row[0], 'local' => $row[1],
             'date'=>$row[2],'title'=>$row[3],'description'=>$row[4],'gender'=>$row[5],
-            'userimage'=>$row[6],'userid'=>$row[7],'writedate'=>$row[8],'maxage'=>$row[9],'minage'=>$row[10],'nickname'=>$row[11]));
+            'userimage'=>$row[6],'userid'=>$row[7],'writedate'=>$row[8],'maxage'=>$row[9],'minage'=>$row[10],'nickname'=>$row[11],'individualid'=>$row[12]));
 
     }
     $json = json_encode(array("individualwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
