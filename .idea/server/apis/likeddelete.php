@@ -2,18 +2,16 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$liked = json_decode(file_get_contents("php://input"));
+$likeddelete = json_decode(file_get_contents("php://input"));
 
-if(!$liked->postid){
+if(!$likeddelete->likedid){
     sendResponse(400, [] , 'postid Required !');
 }else{
-
     $conn=getConnection();
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql="INSERT INTO liked(postid,nickname,userid)
-         VALUES ('".$liked->postid."','".$liked->nickname."','".$liked->userid."')";
+        $sql = "delete from liked where likedid=$likeddelete->likedid";
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.
         if ($result) {
@@ -21,7 +19,7 @@ if(!$liked->postid){
         } else {
             sendResponse(404, [] ,'User not Registered');
         }
-        //close connection
+
         $conn->close();
     }
 }
