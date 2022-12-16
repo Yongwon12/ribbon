@@ -2,10 +2,6 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 $conn=getConnection();
-//method file_get_contents() get all data send via API call.
-//json_decode() decodes data as json and assign to variable $user.
-$used = json_encode(file_get_contents("php://output"));
-//validation whether user data is having name or not. similarly email, password etc.
 
 $result = mysqli_query($conn,$sql);
 $data = array();
