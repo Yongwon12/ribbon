@@ -12,8 +12,8 @@ if(!$liked->postid){
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql="INSERT INTO liked(postid,nickname,userid)
-         VALUES ('".$liked->postid."','".$liked->nickname."','".$liked->userid."')";
+        $sql="INSERT INTO liked(categoryid,nickname,userid,inherentid)
+         VALUES ('".$liked->categoryid."','".$liked->nickname."','".$liked->userid."','".$liked->inherentid."')";
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.
         if ($result) {

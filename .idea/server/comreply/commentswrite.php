@@ -12,8 +12,10 @@ if(!$commentswrite->description){
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }elseif(!$commentswrite->commentsid){
-        $sql1="INSERT INTO comments(description)
-         VALUES ('".$commentswrite->description."')";
+        $sql1="INSERT INTO comments(description,userid,nickname,categoryid,inherentid)
+         VALUES ('".$commentswrite->description."','".$commentswrite->userid."','"
+            .$commentswrite->nickname."','".$commentswrite->categoryid."','"
+            .$commentswrite->inherentid."')";
 
         $result1 = mysqli_query($conn, $sql1);
         if ($result1) {
@@ -24,6 +26,7 @@ if(!$commentswrite->description){
         //close connection
         $conn->close();
     } elseif ($commentswrite->commentsid) {
+
         $sql2 = "update comments set description='".$commentswrite->description."' where commentsid='".$commentswrite->commentsid."'";
         $result2 = mysqli_query($conn, $sql2);
         if ($result2) {
