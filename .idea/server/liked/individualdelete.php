@@ -5,15 +5,15 @@ basename(include_once('../common/encipher.php'));
 $likeddelete = json_decode(file_get_contents("php://input"));
 
 if(!$likeddelete->categoryid){
-    sendResponse(400, [] , 'categoryid Required !');
+    sendResponse(400, [] , 'likedid Required !');
 }else{
     $conn=getConnection();
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql1 = "delete from liked where categoryid='".$likeddelete->categoryid."' AND userid='".$likeddelete->userid."' AND inherentid='".$likeddelete->inherentid."'";
+        $sql1 = "delete from individualliked where categoryid='".$likeddelete->categoryid."' AND userid='".$likeddelete->userid."' AND inherentid='".$likeddelete->inherentid."'";
         $result1 = mysqli_query($conn,$sql1);
-        $sql2 = "update boardwrite set likedcount = likedcount - 1 where boardid = '".$likeddelete->inherentid."'";
+        $sql2 = "update individualwrite set likedcount = likedcount - 1 where individualid = '".$likeddelete->inherentid."'";
         $result2 = mysqli_query($conn, $sql2);
 
         if ($result1) {

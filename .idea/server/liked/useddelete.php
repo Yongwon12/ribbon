@@ -11,9 +11,9 @@ if(!$likeddelete->categoryid){
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql1 = "delete from liked where categoryid='".$likeddelete->categoryid."' AND userid='".$likeddelete->userid."' AND inherentid='".$likeddelete->inherentid."'";
+        $sql1 = "delete from usedliked where categoryid='".$likeddelete->categoryid."' AND userid='".$likeddelete->userid."' AND inherentid='".$likeddelete->inherentid."'";
         $result1 = mysqli_query($conn,$sql1);
-        $sql2 = "update boardwrite set likedcount = likedcount - 1 where boardid = '".$likeddelete->inherentid."'";
+        $sql2 = "update usedwrite set likedcount = likedcount - 1 where usedid = '".$likeddelete->inherentid."'";
         $result2 = mysqli_query($conn, $sql2);
 
         if ($result1) {

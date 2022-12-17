@@ -9,10 +9,10 @@ if ($result)
 {
     while ($row = mysqli_fetch_array($result))
     {
-        array_push($data, array('usedwrite.id'=>$row[0],'userimage'=>$row[1],'local'=>$row[2],
-            'title'=>$row[3],'description'=>$row[4],'usedimage1'=>$row[5],'price'=>$row[6],
-            'userid'=>$row[7],'writedate'=>$row[8],'user.nickname'=>$row[9],'usedid'=>$row[10],
-            'usedimage2'=>$row[11],'usedimage3'=>$row[12],'usedimage4'=>$row[13],'usedimage5'=>$row[14]));
+        array_push($data, array('id'=>$row[0],'local'=>$row[1],'title'=>$row[2],
+            'description'=>$row[3],'usedimage1'=>$row[4],'price'=>$row[5],'userid'=>$row[6],
+            'writedate'=>$row[7],'nickname'=>$row[8],'usedid'=>$row[9],'usedimage2'=>$row[10],
+            'usedimage3'=>$row[11],'usedimage4'=>$row[12],'usedimage5'=>$row[13]));
 
     }
     $json = json_encode(array("usedwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);

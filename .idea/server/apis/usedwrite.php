@@ -21,13 +21,13 @@ if(!$used->id){
     }else{
         $sql="INSERT INTO usedwrite(id,local,title,description,usedimage1,
                       price,userid,writedate,nickname,usedimage2,
-                      usedimage3,usedimage4,usedimage5)
+                      usedimage3,usedimage4,usedimage5,likedcount)
          VALUES ('".$used->id."','".$used->local."','".$used->title."','"
             .$used->description."','" .$used -> usedimage1."','"
             .$used->price."','".$used->userid."','"
             .$used -> writedate."','" .$used -> nickname."',
             '" .$used -> usedimage2."','" .$used -> usedimage3."','" .$used -> usedimage4."',
-            '" .$used -> usedimage5."')";
+            '" .$used -> usedimage5."','" .$used -> likedcount."')";
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.
