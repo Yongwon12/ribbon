@@ -5,19 +5,23 @@ basename(include_once('../common/encipher.php'));
 $conn=getConnection();
 $liked = json_decode(file_get_contents("php://input"));
 
-$sql = "select categoryid,inherentid,likedcount from usedliked left join usedwrite on liked.inherentid=usedwrite.usedid";
-$result = mysqli_query($conn, $sql);
+$sql3 = "select likedcount from usedliked left join usedwrite on usedliked.inherentid=usedwrite.usedid where categoryid = '" . $liked->categoryid . "' AND inherentid = '" . $liked->inherentid . "'";
+$result3 = mysqli_query($conn, $sql3);
 $data = array();
-if ($result) {
-    while ($row = mysqli_fetch_array($result)) {
-        array_push($data, array('categoryid' => $row[0],'inherentid' => $row[1],'likedcount' => $row[2]));
-    }
+$row = mysqli_fetch_array($result3);
+if ($result3) {
+    array_push($data, print_r('
+    {
+    "likedcount" : 
+        {
+            "likedcount":"' . $row[0] . '"
+        }
+    }'));
 
-    $json = json_encode(array("usedlikedinfo" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
-    echo $json;
+}
 
 
-} else {
+else {
     echo "sql 처리중 에러";
     echo mysqli_error($conn);
 
