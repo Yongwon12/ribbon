@@ -13,7 +13,8 @@ if ($result)
     {
         array_push($data, array('id' => $row[0], 'local' => $row[1],
             'date'=>$row[2],'title'=>$row[3],'description'=>$row[4],'gender'=>$row[5],
-            'userimage'=>$row[6],'userid'=>$row[7],'writedate'=>$row[8],'maxage'=>$row[9],'minage'=>$row[10],'nickname'=>$row[11],'individualid'=>$row[12]));
+            'userimage'=>$row[6],'userid'=>$row[7],'writedate'=>$row[8],'maxage'=>$row[9],
+            'minage'=>$row[10],'nickname'=>$row[11],'individualid'=>$row[12],'likedcount'=>$row[13]));
 
     }
     $json = json_encode(array("individualwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);

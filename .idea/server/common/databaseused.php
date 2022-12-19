@@ -12,7 +12,7 @@ if ($result)
         array_push($data, array('id'=>$row[0],'local'=>$row[1],'title'=>$row[2],
             'description'=>$row[3],'usedimage1'=>$row[4],'price'=>$row[5],'userid'=>$row[6],
             'writedate'=>$row[7],'nickname'=>$row[8],'usedid'=>$row[9],'usedimage2'=>$row[10],
-            'usedimage3'=>$row[11],'usedimage4'=>$row[12],'usedimage5'=>$row[13]));
+            'usedimage3'=>$row[11],'usedimage4'=>$row[12],'usedimage5'=>$row[13],'likedcount'=>$row[14]));
 
     }
     $json = json_encode(array("usedwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
