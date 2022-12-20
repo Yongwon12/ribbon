@@ -12,11 +12,11 @@ if(!$replywrite->description){
     if ($conn == null) {
         sendResponse(500, $conn, 'Server Connection Error !');
     } elseif ($replywrite->categoryid) {
-        $sql1 = "INSERT INTO reply(description,profileimage,writedate,usedid,nickname,
+        $sql1 = "INSERT INTO reply(description,profileimage,writedate,userid,nickname,
                      categoryid,inherentid)
          VALUES ('" . $replywrite->description . "','" . $replywrite->profileimage . "','"
-            . $replywrite->writedate . "','" . $replywrite->usedid . "','"
-            . $replywrite->nickname . "','" . $replywrite->categoryid . "','" . $commentswrite->inherentid . "')";
+            . $replywrite->writedate . "','" . $replywrite->userid . "','"
+            . $replywrite->nickname . "','" . $replywrite->categoryid . "','" . $replywrite->inherentid . "')";
 
         $result1 = mysqli_query($conn, $sql1);
 
