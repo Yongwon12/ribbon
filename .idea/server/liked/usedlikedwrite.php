@@ -21,16 +21,16 @@ if(!$liked->inherentid){
 
         $sql3 = "select likedcount from usedliked left join usedwrite on usedliked.inherentid=usedwrite.usedid where categoryid = '" . $liked->categoryid . "' AND inherentid = '" . $liked->inherentid . "'";
         $result3 = mysqli_query($conn, $sql3);
-        $data = array();
+
         $row = mysqli_fetch_array($result3);
         if ($result3) {
-            array_push($data, print_r('
+            print_r('
     {
     "likedcount" : 
         {
             "likedcount":"' . $row[0] . '"
         }
-    }'));
+    }');
         }
 
 

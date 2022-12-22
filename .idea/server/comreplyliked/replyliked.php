@@ -2,35 +2,35 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$commentsliked = json_decode(file_get_contents("php://input"));
+$replyliked = json_decode(file_get_contents("php://input"));
 
-if(!$commentsliked->inherentcommentsid){
-    sendResponse(400, [] , 'inherentcommentsid Required !');
+if(!$replyliked->inherentreplyid){
+    sendResponse(400, [] , 'inherentreplyid Required !');
 }else{
 
     $conn=getConnection();
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }elseif ($conn) {
-        $sql1 = "INSERT INTO commentsliked(categoryid,userid,inherentid,inherentcommentsid)
-         VALUES ('" . $commentsliked->categoryid . "','" . $commentsliked->userid . "','" . $commentsliked->inherentid . "','" . $commentsliked->inherentcommentsid . "')";
+        $sql1 = "INSERT INTO replyliked(categoryid,userid,inherentid,inherentreplyid)
+         VALUES ('" . $replyliked->categoryid . "','" . $replyliked->userid . "','" . $replyliked->inherentid . "','" . $replyliked->inherentreplyid . "')";
         $result1 = mysqli_query($conn, $sql1);
 
-        $sql2 = "update comments set likedcount = likedcount + 1 where commentsid = '" . $commentsliked->inherentcommentsid . "'";
+        $sql2 = "update reply set likedcount = likedcount + 1 where replyid = '" . $replyliked->inherentreplyid . "'";
         $result2 = mysqli_query($conn, $sql2);
 
-        $sql3 = "select likedcount from commentsliked left join comments on commentsliked.inherentcommentsid=comments.commentsid where inherentcommentsid = '".$commentsliked->inherentcommentsid."'";
+        $sql3 = "select likedcount from replyliked left join reply on replyliked.inherentreplyid=reply.replyid where inherentreplyid = '".$replyliked->inherentreplyid."'";
         $result3 = mysqli_query($conn, $sql3);
-        $data = array();
+
         $row = mysqli_fetch_array($result3);
         if ($result3) {
-            array_push($data, print_r('
+             print_r('
     {
     "likedcount" : 
         {
             "likedcount":"' . $row[0] . '"
         }
-    }'));
+    }');
 
         }
 

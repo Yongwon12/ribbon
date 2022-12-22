@@ -20,17 +20,16 @@ if(!$liked->inherentid){
         $result2 = mysqli_query($conn, $sql2);
 
         $sql3 = "select likedcount from liked left join boardwrite on liked.inherentid=boardwrite.boardid where categoryid = '" . $liked->categoryid . "' AND inherentid = '" . $liked->inherentid . "'";
-        $result3 = mysqli_query($conn, $sql3);
-        $data = array();
+        $result3 = mysqli_query($conn, $sql3);$data = array();
         $row = mysqli_fetch_array($result3);
         if ($result3) {
-            array_push($data, print_r('
+             print_r('
     {
     "likedcount" : 
         {
             "likedcount":"' . $row[0] . '"
         }
-    }'));
+    }');
 
         }
 
