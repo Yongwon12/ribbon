@@ -5,6 +5,11 @@ $replyinfo = json_decode(file_get_contents("php://input"));
 $conn = getConnection();
 $sql = "select * from reply";
 $result = mysqli_query($conn, $sql);
+$sql2 = "select count(*) from reply where categoryid = 
+         '".$replyinfo->categoryid."'  AND inherentid = '".$replyinfo->inherentid."'";
+
+$result2 = mysqli_query($conn,$sql2);
+$row2 = mysqli_fetch_array($result2);
 $data = array();
 if ($result)
 {
@@ -12,7 +17,7 @@ if ($result)
     {
         array_push($data, array('description' => $row[0], 'profileimage' => $row[1],
             'writedate'=>$row[2],'userid'=>$row[3],'nickname'=>$row[4],'categoryid'=>$row[5],
-            'inherentid'=>$row[6],'likedcount'=>$row[7],'replyid'=>$row[8],'inherentcommentsid'=>$row[9],'isrecomment'=>$row[10]));
+            'inherentid'=>$row[6],'likedcount'=>$row[7],'replyid'=>$row[8],'inherentcommentsid'=>$row[9],'isrecomment'=>$row[10],'replycount'=>$row2[0]));
     }
 
     $json = json_encode(array("reply" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);

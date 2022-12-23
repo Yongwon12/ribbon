@@ -4,14 +4,18 @@ basename(include_once('../common/encipher.php'));
 
 $commentswrite = json_decode(file_get_contents("php://input"));
 
-if(!$commentswrite->description){
-    sendResponse(400, [] , 'description Required !');
+if(!$commentswrite->inherentid){
+    sendResponse(400, [] , 'inherentid Required !');
 }else {
 
     $conn = getConnection();
     if ($conn == null) {
         sendResponse(500, $conn, 'Server Connection Error !');
-    } elseif ($commentswrite->categoryid) {
+    } elseif ($commentswrite->inherentid) {
+        if ($commentswrite->inherentid) {
+            $sql4 = "update boardwrite set commentcount = commentcount + 1 where boardid = '" . $commentswrite->inherentid . "'";
+            mysqli_query($conn, $sql4);
+        }
         $sql1 = "INSERT INTO comments(description,userid,nickname,categoryid,inherentid,
                      writedate,profileimage)
          VALUES ('" . $commentswrite->description . "','" . $commentswrite->userid . "','"
@@ -20,6 +24,9 @@ if(!$commentswrite->description){
 
         $result1 = mysqli_query($conn, $sql1);
 
+
+
+
         $sql2 = "select count(*) from comments where categoryid = 
          '".$commentswrite->categoryid."'  AND inherentid = '".$commentswrite->inherentid."'";
 
@@ -27,6 +34,8 @@ if(!$commentswrite->description){
         $sql3 = "select commentsid from comments  order by commentsid desc limit 1";
         $result3 = mysqli_query($conn, $sql3);
         $row2 = mysqli_fetch_array($result3);
+
+
         if ($result2) {
             while ($row1 = mysqli_fetch_array($result2)) {
                 print_r('
@@ -39,6 +48,9 @@ if(!$commentswrite->description){
     }');
             }
         }
+
+
+
 
         if ($result1) {
             sendResponse(200, $result1, 'User Registration Successful.');
@@ -54,5 +66,10 @@ if(!$commentswrite->description){
         //close connection
         $conn->close();
     }
+
+
+
+
+
 }
 ?>
