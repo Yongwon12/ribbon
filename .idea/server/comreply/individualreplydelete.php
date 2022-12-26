@@ -2,16 +2,16 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$commentsdelete = json_decode(file_get_contents("php://input"));
+$individualreplydelete = json_decode(file_get_contents("php://input"));
 
-if(!$commentsdelete->commentsid){
+if(!$individualreplydelete->individualreplyid){
     sendResponse(400, [] , 'categoryid Required !');
 }else{
     $conn=getConnection();
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql1 = "delete from comments where commentsid='".$commentsdelete->commentsid."'";
+        $sql1 = "delete from individualreply where individualreplyid='".$individualreplydelete->individualreplyid."'";
         $result1 = mysqli_query($conn,$sql1);
 
     }

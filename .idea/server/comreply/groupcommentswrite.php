@@ -40,10 +40,10 @@ if(!$groupcommentswrite->inherentid){
             while ($row1 = mysqli_fetch_array($result2)) {
                 print_r('
     {
-    "groupcommentcount" : 
+    "commentcount" : 
         {
-            "groupcommentcount":"' . $row1[0] . '",
-        "groupcommentid":"' . $row2[0] . '"
+            "commentcount":"' . $row1[0] . '",
+        "commentid":"' . $row2[0] . '"
         }
     }');
             }

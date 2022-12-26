@@ -2,35 +2,35 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$replywrite = json_decode(file_get_contents("php://input"));
-if(!$replywrite->inherentid){
+$usedreplywrite = json_decode(file_get_contents("php://input"));
+if(!$usedreplywrite->inherentid){
     sendResponse(400, [] , 'inherentid Required !');
 }else {
 
     $conn = getConnection();
     if ($conn == null) {
         sendResponse(500, $conn, 'Server Connection Error !');
-    } elseif ($replywrite->inherentid) {
-        if ($replywrite->inherentid) {
-            $sql4 = "update boardwrite set replycount = replycount + 1 where boardid = '" . $replywrite->inherentid . "'";
+    } elseif ($usedreplywrite->inherentid) {
+        if ($usedreplywrite->inherentid) {
+            $sql4 = "update usedwrite set commentcount = commentcount + 1 where usedid = '" . $usedreplywrite->inherentid . "'";
             mysqli_query($conn, $sql4);
         }
 
-        $sql1 = "INSERT INTO reply(description,profileimage,writedate,userid,nickname,
-                     categoryid,inherentid,inherentcommentsid)
-         VALUES ('" . $replywrite->description . "','" . $replywrite->profileimage . "','"
-            . $replywrite->writedate . "','" . $replywrite->userid . "','"
-            . $replywrite->nickname . "','" . $replywrite->categoryid . "','" . $replywrite->inherentid . "','" . $replywrite->inherentcommentsid . "')";
+        $sql1 = "INSERT INTO usedreply(description,profileimage,writedate,userid,nickname,
+                     inherentid,inherentcommentsid)
+         VALUES ('" . $usedreplywrite->description . "','" . $usedreplywrite->profileimage . "','"
+            . $usedreplywrite->writedate . "','" . $usedreplywrite->userid . "','"
+            . $usedreplywrite->nickname . "','" . $usedreplywrite->categoryid . "','" . $usedreplywrite->inherentid . "','" . $usedreplywrite->inherentcommentsid . "')";
         $result1 = mysqli_query($conn, $sql1);
 
 
 
 
-        $sql2 = "select count(*) from reply where categoryid = 
-         '" . $replywrite->categoryid . "'  AND inherentid = '" . $replywrite->inherentid . "'";
+        $sql2 = "select commentcount from usedwrite where usedid = 
+         '" . $usedreplywrite->inherentid . "'";
 
         $result2 = mysqli_query($conn, $sql2);
-        $sql3 = "select replyid from reply  order by replyid desc limit 1";
+        $sql3 = "select usedreplyid from usedreply  order by usedreplyid desc limit 1";
         $result3 = mysqli_query($conn, $sql3);
         $row2 = mysqli_fetch_array($result3);
 

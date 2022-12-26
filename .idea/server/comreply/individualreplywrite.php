@@ -2,35 +2,35 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$groupreplywrite = json_decode(file_get_contents("php://input"));
-if(!$groupreplywrite->inherentid){
+$individualreplywrite = json_decode(file_get_contents("php://input"));
+if(!$individualreplywrite->inherentid){
     sendResponse(400, [] , 'inherentid Required !');
 }else {
 
     $conn = getConnection();
     if ($conn == null) {
         sendResponse(500, $conn, 'Server Connection Error !');
-    } elseif ($groupreplywrite->inherentid) {
-        if ($groupreplywrite->inherentid) {
-            $sql4 = "update groupwrite set commentcount = commentcount + 1 where groupid = '" . $groupreplywrite->inherentid . "'";
+    } elseif ($individualreplywrite->inherentid) {
+        if ($individualreplywrite->inherentid) {
+            $sql4 = "update individualwrite set commentcount = commentcount + 1 where individualid = '" . $individualreplywrite->inherentid . "'";
             mysqli_query($conn, $sql4);
         }
 
-        $sql1 = "INSERT INTO groupreply(description,profileimage,writedate,userid,nickname,
+        $sql1 = "INSERT INTO individualreply(description,profileimage,writedate,userid,nickname,
                      inherentid,inherentcommentsid)
-         VALUES ('" . $groupreplywrite->description . "','" . $groupreplywrite->profileimage . "','"
-            . $groupreplywrite->writedate . "','" . $groupreplywrite->userid . "','"
-            . $groupreplywrite->nickname . "','" . $groupreplywrite->categoryid . "','" . $groupreplywrite->inherentid . "','" . $groupreplywrite->inherentcommentsid . "')";
+         VALUES ('" . $individualreplywrite->description . "','" . $individualreplywrite->profileimage . "','"
+            . $individualreplywrite->writedate . "','" . $individualreplywrite->userid . "','"
+            . $individualreplywrite->nickname . "','" . $individualreplywrite->inherentid . "','" . $individualreplywrite->inherentcommentsid . "')";
         $result1 = mysqli_query($conn, $sql1);
 
 
 
 
-        $sql2 = "select commentcount from groupwrite where groupid = 
-         '" . $groupreplywrite->inherentid . "'";
+        $sql2 = "select commentcount from individualwrite where individualid = 
+         '" . $individualreplywrite->inherentid . "'";
 
         $result2 = mysqli_query($conn, $sql2);
-        $sql3 = "select groupreplyid from groupreply  order by groupreplyid desc limit 1";
+        $sql3 = "select individualreplyid from individualreply  order by individualreplyid desc limit 1";
         $result3 = mysqli_query($conn, $sql3);
         $row2 = mysqli_fetch_array($result3);
 

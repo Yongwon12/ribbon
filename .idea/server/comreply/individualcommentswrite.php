@@ -39,10 +39,10 @@ if(!$individualcommentswrite->inherentid){
             while ($row1 = mysqli_fetch_array($result2)) {
                 print_r('
     {
-    "individualcommentcount" : 
+    "commentcount" : 
         {
-            "individualcommentcount":"' . $row1[0] . '",
-        "individualcommentid":"' . $row2[0] . '"
+            "commentcount":"' . $row1[0] . '",
+        "commentsid":"' . $row2[0] . '"
         }
     }');
             }
