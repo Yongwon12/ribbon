@@ -20,7 +20,7 @@ if ($result)
         array_push($data, array('id' => $row[0], 'sns_id' => $row[1],
             'sns_type'=>$row[2],'sns_name'=>$row[3],'sns_profile'=>$row[4],'sns_connect_date'=>$row[5]));
     }
-    $json = json_encode(array("user" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+    $json = htmlspecialchars(json_encode(array("user" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
     echo $json;
 }
 else

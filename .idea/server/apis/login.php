@@ -24,7 +24,7 @@ if ($result)
             'image'=>$row[9],'gender'=>$row[10]));
 
     }
-    $json = json_encode(array("user" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+    $json = htmlspecialchars(json_encode(array("user" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
         echo $json;
     }
 else

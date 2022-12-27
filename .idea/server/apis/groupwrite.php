@@ -18,13 +18,13 @@ else{
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql="INSERT INTO groupwrite(id,local,title,line,description,
+        $sql = "INSERT INTO groupwrite(id,local,title,line,description,
                  peoplenum,gender,minage,titleimage,userid,maxage,writedate,peoplenownum,nickname,once)
-         VALUES ('".$group->id."','".$group->local."','"
-        .$group->title."','".$group->line."','" .$group -> description."','"
-            .$group->peoplenum."','".$group->gender."','" .$group -> minage."','"
-            .$group->titleimage."','".$group->userid."','" .$group -> maxage."','"
-            .$group->writedate."','".$group->peoplenownum."','".$group->nickname."','".$group->once."')";
+         VALUES ('" . $group->id . "','" . $group->local . "','"
+            . $group->title . "','" . $group->line . "','" . $group->description . "','"
+            . $group->peoplenum . "','" . $group->gender . "','" . $group->minage . "','"
+            . $group->titleimage . "','" . $group->userid . "','" . $group->maxage . "','"
+            . $group->writedate . "','" . $group->peoplenownum . "','" . $group->nickname . "','" . $group->once . "')";
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.

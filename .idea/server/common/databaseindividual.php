@@ -17,7 +17,7 @@ if ($result)
             'minage'=>$row[10],'nickname'=>$row[11],'individualid'=>$row[12],'likedcount'=>$row[13]));
 
     }
-    $json = json_encode(array("individualwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+    $json = htmlspecialchars(json_encode(array("individualwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
     echo $json;
 }
 else

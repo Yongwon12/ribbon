@@ -21,12 +21,12 @@ if(!$user->username){
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        #$sql="INSERT INTO user(username, password,email,nickname,
+        $sql = "INSERT INTO user(username, password,email,nickname,
                  mobile,create_date,modify_date,birth,userimage,gender)
-         VALUES ('".$user->username."','".$user->password."','"
-        .$user->email."','".$user->nickname."','" .$user -> mobile."','"
-             .$user->create_date."','".$user->modify_date."','"
-        .$user -> birth."','".$user->userimage."','".$user->gender."')";
+         VALUES ('" . $user->username . "','" . $user->password . "','"
+            . $user->email . "','" . $user->nickname . "','" . $user->mobile . "','"
+            . $user->create_date . "','" . $user->modify_date . "','"
+            . $user->birth . "','" . $user->userimage . "','" . $user->gender . "')";
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.

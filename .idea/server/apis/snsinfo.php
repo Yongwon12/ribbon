@@ -18,10 +18,10 @@ if(!$user->sns_id){
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql="INSERT INTO naverinfo(sns_id, sns_type,sns_name,sns_profile,sns_connect_date)
-        VALUES ('".$user->sns_id."','".$user->sns_type."','"
-        .$user->sns_name."','".$user->sns_profile."','"
-            .$user -> sns_connect_date."')";
+        $sql = "INSERT INTO naverinfo(sns_id, sns_type,sns_name,sns_profile,sns_connect_date)
+        VALUES ('" . $user->sns_id . "','" . $user->sns_type . "','"
+            . $user->sns_name . "','" . $user->sns_profile . "','"
+            . $user->sns_connect_date . "')";
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.

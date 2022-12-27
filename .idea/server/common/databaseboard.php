@@ -17,7 +17,7 @@ if ($result)
 
     }
 
-    $json = json_encode(array("boardwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+    $json = htmlspecialchars(json_encode(array("boardwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
     echo $json;
 }
 else

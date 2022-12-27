@@ -15,7 +15,7 @@ if ($result)
             'usedimage3'=>$row[11],'usedimage4'=>$row[12],'usedimage5'=>$row[13],'likedcount'=>$row[14]));
 
     }
-    $json = json_encode(array("usedwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+    $json = htmlspecialchars(json_encode(array("usedwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
     echo $json;
 }
 else

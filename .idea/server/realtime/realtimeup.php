@@ -14,7 +14,7 @@ if ($result) {
 
     }
 
-    $json = json_encode(array("bestwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+    $json = htmlspecialchars(json_encode(array("bestwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
     echo $json;
 } else {
     echo "sql 처리중 에러";

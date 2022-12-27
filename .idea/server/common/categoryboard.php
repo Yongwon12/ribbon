@@ -1,7 +1,7 @@
 <?php
 
 
-    $sql = "select boardid,userid,category.id,title,description,img,writedate,profileimage,nickname,likedcount,commentcount from boardwrite left join category on boardwrite.id = category.id where category.id = $i";
+$sql = "select boardid,userid,category.id,title,description,img,writedate,profileimage,nickname,likedcount,commentcount from boardwrite left join category on boardwrite.id = category.id where category.id = $i";
 
 
     $result = mysqli_query($conn, $sql);
@@ -18,7 +18,7 @@
 
         }
 
-            $json = json_encode(array("boardwrite$i" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+            $json = htmlspecialchars(json_encode(array("boardwrite$i" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
 
 
 

@@ -20,7 +20,7 @@ if ($result)
             'profileimage'=>$row[6],'likedcount'=>$row[7],'commentsid'=>$row[8],'isrecomment'=>$row[9],'commentcount'=>$row2[0]));
     }
 
-    $json = json_encode(array("comment" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+    $json = htmlspecialchars(json_encode(array("comment" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
     echo $json;
 }
 
