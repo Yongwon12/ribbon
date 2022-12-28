@@ -21,7 +21,7 @@ if ($result)
         array_push($data, array('id'=>$row[0],'board'=>$row[1]));
 
     }
-    $json = htmlspecialchars(json_encode(array("category" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
+    $json = json_encode(array("category" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
     echo $json;
 }
 else

@@ -1,21 +1,20 @@
 <?php
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
+$user = json_decode(file_get_contents("php://input"));
 $conn=getConnection();
-
-
 $result = mysqli_query($conn,$sql);
 $data = array();
 if ($result)
 {
     while ($row = mysqli_fetch_array($result))
     {
-        // or select*from 테이블 where id = 3 and userid = 3 이런식으로 불러오기 + 배열형식
-        array_push($data, array('id' => $row[0], 'userid' => $row[1],
-            'title'=>$row[2],'description'=>$row[3],'img'=>$row[4],'writedate'=>$row[5],
-            'profileimage'=>$row[6],'nickname'=>$row[7],'boardid'=>$row[8],'likedcount'=>$row[9]));
 
+        array_push($data, array('username' => $row[0], 'email' => $row[1],
+            'nickname'=>$row[2],'mobile'=>$row[3],'create_date'=>$row[4],'modify_date'=>$row[5],
+            'birth'=>$row[6],'userimage'=>$row[7], 'gender' => $row[8]));
     }
+
 
     $json = json_encode(array("boardwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
     echo $json;

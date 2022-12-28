@@ -20,7 +20,7 @@ if ($result)
             'likedcount'=>$row[6],'individualreplyid'=>$row[7],'inherentcommentsid'=>$row[8],'isrecomment'=>$row[9],'commentcount'=>$row2[0]));
     }
 
-    $json = htmlspecialchars(json_encode(array("reply" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
+    $json = json_encode(array("reply" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
     echo $json;
 }
 ?>

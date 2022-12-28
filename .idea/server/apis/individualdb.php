@@ -2,5 +2,5 @@
 
 $sql ="SELECT * FROM individualwrite";
 
-require_once('../common/databaseindividual.php');
+basename(require_once('../common/databaseindividual.php'));
 ?>

@@ -21,10 +21,10 @@ if ($result)
         array_push($data, array('id' => $row[0], 'username' => $row[1],
             'password'=>$row[2],'email'=>$row[3],'nickname'=>$row[4],'mobile'=>$row[5],
             'create_date'=>$row[6], 'modify_date'=>$row[7],'birth'=>$row[8],
-            'image'=>$row[9],'gender'=>$row[10]));
+            'image'=>$row[9],'gender'=>$row[10],'bestcategory'=>$row[11],'shortinfo'=>$row[12]));
 
     }
-    $json = htmlspecialchars(json_encode(array("user" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
+    $json = json_encode(array("userid" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
         echo $json;
     }
 else

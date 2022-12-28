@@ -1,35 +1,18 @@
 <?php
-basename(include_once('../common/include.php'));
+
+basename(include_once('../common/header.php'));
+basename(include_once('../common/response.php'));
 basename(include_once('../common/encipher.php'));
-$commentsinfo = json_decode(file_get_contents("php://input"));
-$conn = getConnection();
-$sql = "select * from comments";
-$result = mysqli_query($conn, $sql);
-$data = array();
 
-if ($result)
-{
-    while ($row = mysqli_fetch_array($result))
-    {
-        array_push($data,
-            print_r('
-    {
-    "comments" : 
-        {
-            "description":"' . $row[0] . '"
-            "userid":"' . $row[1] . '"
-            "nickname":"' . $row[2] . '"
-            "categoryid":"' . $row[3] . '"
-            "inherentid":"' . $row[4] . '"
-            "writedate":"' . $row[5] . '"
-            "profileimage":"' . $row[6] . '"
-            "likedcount":"' . $row[7] . '"
-            "commentsid":"' . $row[8] . '"
-            "isrecomment":"' . $row[9] . '"
-            
-        }
-    }'));
-    }
+require_once('../common/databasetest.php');
+$_POST = json_decode(file_get_contents("php://input"));
 
-}
+$sql = $conn->prepare("select username from user where id = :id");
+$sql->bindValue(':id',$_POST->id);
+$sql->execute();
+$result = $sql->fetch(PDO::FETCH_ASSOC);
+$data = json_encode($result);
+print_r($data);
+
+
 ?>

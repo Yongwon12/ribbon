@@ -15,7 +15,7 @@ array_push($data, array('id' => $row[0], 'local' => $row[1],
 'maxage'=>$row[10],'writedate'=>$row[11],'peoplenownum'=>$row[12],'nickname'=>$row[13],'groupid'=>$row[14],'once'=>$row[15]));
 
 }
-    $json = htmlspecialchars(json_encode(array("groupwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
+    $json = json_encode(array("groupwrite" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
     echo $json;
 }
 else

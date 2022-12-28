@@ -2,5 +2,5 @@
 
 $sql = "SELECT * FROM groupwrite";
 
-require_once('../common/databasegroup.php');
+basename(require_once('../common/databasegroup.php'));
 ?>

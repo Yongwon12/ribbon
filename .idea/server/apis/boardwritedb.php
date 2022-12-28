@@ -2,5 +2,5 @@
 
 $sql = "SELECT * FROM boardwrite";
 
-require_once('../common/databaseboard.php');
+basename(require_once('../common/databaseboard.php'));
 ?>

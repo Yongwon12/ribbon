@@ -2,41 +2,47 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-//method file_get_contents() get all data send via API call.
-//json_decode() decodes data as json and assign to variable $user.
-$user = json_decode(file_get_contents("php://input"));
-
-//validation whether user data is having name or not. similarly email, password etc.
-if(!$user->username){
+$_POST = json_decode(file_get_contents("php://input"));
+if(!$_POST->username){
     sendResponse(400, [] , 'Name Required !');
-}else if(!$user->email){
+}else if(!$_POST->email){
     sendResponse(400, [] , 'Email Required !');
-}else if(!$user->password){
+}else if(!$_POST->password){
     sendResponse(400, [] , 'password Required !');
-
-}else{
-    //method doEncrypt() of encipher.php which convert plain text to encrypted text.
-    $password = doEncrypt($user->password);
-    $conn=getConnection();
-    if($conn==null){
+}else {
+    $password = doEncrypt($_POST->password);
+    $conn = getConnection();
+    if ($conn == null) {
         sendResponse(500, $conn, 'Server Connection Error !');
-    }else{
-        $sql = "INSERT INTO user(username, password,email,nickname,
-                 mobile,create_date,modify_date,birth,userimage,gender)
-         VALUES ('" . $user->username . "','" . $user->password . "','"
-            . $user->email . "','" . $user->nickname . "','" . $user->mobile . "','"
-            . $user->create_date . "','" . $user->modify_date . "','"
-            . $user->birth . "','" . $user->userimage . "','" . $user->gender . "')";
+    } elseif ($conn) {
+        $sql = "INSERT INTO user(username,password,email,nickname,
+                 mobile,create_date,modify_date,birth,userimage,gender,bestcategory,shortinfo)
+         VALUES ('".$_POST->username."','" .$_POST->password . "','"
+        . $_POST->email . "','" . $_POST->nickname . "','" . $_POST->mobile . "','"
+        . $_POST->create_date . "','" . $_POST->modify_date . "','"
+        . $_POST->birth . "','" . $_POST->userimage . "','" . $_POST->gender . "','"
+        . $_POST->bestcategory . "','" . $_POST->shortinfo . "')";
 
+        $result = $conn->query($sql);
 
-        $result = $conn->query($sql); //$result = true/false on success or error respectively.
-        if ($result) {
-            sendResponse(200, $result , 'User Registration Successful.');
-        } else {
-            sendResponse(404, [] ,'User not Registered');
+        $sql1 = "SELECT id FROM user ORDER BY id DESC LIMIT 1";
+        $result1 = $conn->query($sql1);
+        $data = array();
+        while ($row = mysqli_fetch_array($result1)) {
+            array_push($data, array('id' => $row[0]));
         }
-        //close connection
-        $conn->close();
+        $json = json_encode(array("userid" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+        echo $json;
+
+    if ($result) {
+        sendResponse(200, $result, 'User Registration Successful.');
+    } elseif ($result1) {
+        sendResponse(200, $result1, 'User Registration Successful.');
+    } else {
+        sendResponse(404, [], 'User not Registered');
+    }
+    //close connection
+    $conn->close();
     }
 }
 ?>

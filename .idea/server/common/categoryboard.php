@@ -18,7 +18,7 @@ $sql = "select boardid,userid,category.id,title,description,img,writedate,profil
 
         }
 
-            $json = htmlspecialchars(json_encode(array("boardwrite$i" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
+            $json = json_encode(array("boardwrite$i" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
 
 
 

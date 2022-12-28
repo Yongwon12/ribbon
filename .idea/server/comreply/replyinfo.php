@@ -20,7 +20,7 @@ if ($result)
             'inherentid'=>$row[6],'likedcount'=>$row[7],'replyid'=>$row[8],'inherentcommentsid'=>$row[9],'isrecomment'=>$row[10],'commentcount'=>$row2[0]));
     }
 
-    $json = htmlspecialchars(json_encode(array("reply" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE));
+    $json = json_encode(array("reply" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
     echo $json;
 }
 ?>
