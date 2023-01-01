@@ -22,10 +22,10 @@ if(!$board->id){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
         $sql = "INSERT INTO boardwrite(id, userid,title,description,
-                 img,writedate,profileimage,nickname,likedcount)
+                 img,writedate,profileimage,nickname)
          VALUES ('" . $board->id . "','" . $board->userid . "','"
             . $board->title . "','" . $board->description . "','" . $board->img . "','"
-            . $board->writedate . "','" . $board->profileimage . "','" . $board->nickname . "','" . $board->likedcount . "')";
+            . $board->writedate . "','" . $board->profileimage . "','" . $board->nickname . "')";
 
 
         $result = $conn->query($sql); //$result = true/false on success or error respectively.

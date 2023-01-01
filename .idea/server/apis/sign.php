@@ -15,7 +15,7 @@ if(!$_POST->username){
     if ($conn == null) {
         sendResponse(500, $conn, 'Server Connection Error !');
     } elseif ($conn) {
-        $sql = "INSERT INTO user(username,password,email,nickname,
+         $sql = "INSERT INTO user(username,password,email,nickname,
                  mobile,create_date,modify_date,birth,userimage,gender,bestcategory,shortinfo)
          VALUES ('".$_POST->username."','" .$_POST->password . "','"
         . $_POST->email . "','" . $_POST->nickname . "','" . $_POST->mobile . "','"
