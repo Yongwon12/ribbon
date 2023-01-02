@@ -2,18 +2,21 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$groupreplydelete = json_decode(file_get_contents("php://input"));
+$_POST = json_decode(file_get_contents("php://input"));
 
-if(!$groupreplydelete->groupreplyid){
-    sendResponse(400, [] , 'categoryid Required !');
+if(!$_POST->groupreplyid){
+    sendResponse(400, [] , 'groupreplyid Required !');
 }else{
-    $conn=getConnection();
+
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql1 = "delete from groupreply where groupreplyid='".$groupreplydelete->groupreplyid."'";
-        $result1 = mysqli_query($conn,$sql1);
-
+        $sql1 = $conn->prepare("delete from groupreply where groupreplyid=:groupreplyid");
+        $sql1->bindValue(':groupreplyid',$_POST->groupreplyid);
+        $result1 = $sql1->execute();
+        $sql4 = $conn->prepare("update groupwrite set commentcount = commentcount - 1 where groupid = :inherentid");
+        $sql4->bindValue(':inherentid',$_POST->inherentid);
+        $sql4->execute();
     }
 
     if ($result1) {
@@ -26,7 +29,6 @@ if(!$groupreplydelete->groupreplyid){
         sendResponse(404, [] ,'User not Registered');
     }
 
-    $conn->close();
 
 }
 ?>

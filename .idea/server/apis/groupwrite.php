@@ -2,39 +2,45 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-//method file_get_contents() get all data send via API call.
-//json_decode() decodes data as json and assign to variable $user.
-$group = json_decode(file_get_contents("php://input"));
 
-//validation whether user data is having name or not. similarly email, password etc.
-if(!$group->id){
+$_POST = json_decode(file_get_contents("php://input"));
+
+
+if(!$_POST->id){
     sendResponse(400, [] , 'id Required !');
-}else if(!$group->userid){
+}else if(!$_POST->userid){
     sendResponse(400, [] , 'userid Required !');
 }
 else{
-    //method doEncrypt() of encipher.php which convert plain text to encrypted text.
-    $conn=getConnection();
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql = "INSERT INTO groupwrite(id,local,title,line,description,
-                 peoplenum,gender,minage,titleimage,userid,maxage,writedate,peoplenownum,nickname,once)
-         VALUES ('" . $group->id . "','" . $group->local . "','"
-            . $group->title . "','" . $group->line . "','" . $group->description . "','"
-            . $group->peoplenum . "','" . $group->gender . "','" . $group->minage . "','"
-            . $group->titleimage . "','" . $group->userid . "','" . $group->maxage . "','"
-            . $group->writedate . "','" . $group->peoplenownum . "','" . $group->nickname . "','" . $group->once . "')";
-
-
-        $result = $conn->query($sql); //$result = true/false on success or error respectively.
+        $sql = $conn->prepare("INSERT INTO groupwrite(id,local,title,line,description,
+            peoplenum,gender,minage,titleimage,userid,maxage,writedate,peoplenownum,nickname,once)
+         VALUES (:id,:local,:title,:line,:description,:peoplenum,:gender,:minage,:titleimage,
+                 :userid,:maxage,:writedate,:peoplenownum,:nickname,:once)");
+        $sql->bindValue(':id', $_POST->id);
+        $sql->bindValue(':local', $_POST->local);
+        $sql->bindValue(':title', $_POST->title);
+        $sql->bindValue(':line', $_POST->line);
+        $sql->bindValue(':description', $_POST->description);
+        $sql->bindValue(':peoplenum', $_POST->peoplenum);
+        $sql->bindValue(':gender', $_POST->gender);
+        $sql->bindValue(':minage', $_POST->minage);
+        $sql->bindValue(':titleimage', $_POST->titleimage);
+        $sql->bindValue(':userid', $_POST->userid);
+        $sql->bindValue(':maxage', $_POST->maxage);
+        $sql->bindValue(':writedate', $_POST->writedate);
+        $sql->bindValue(':peoplenownum', $_POST->peoplenownum);
+        $sql->bindValue(':nickname', $_POST->nickname);
+        $sql->bindValue(':once', $_POST->once);
+        $result = $sql->execute();
         if ($result) {
             sendResponse(200, $result , 'User Registration Successful.');
         } else {
             sendResponse(404, [] ,'User not Registered');
         }
-        //close connection
-        $conn->close();
+
     }
 }
 ?>

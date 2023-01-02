@@ -2,18 +2,21 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$usedreplydelete = json_decode(file_get_contents("php://input"));
+$_POST = json_decode(file_get_contents("php://input"));
 
-if(!$usedreplydelete->uesdreplyid){
-    sendResponse(400, [] , 'categoryid Required !');
+if(!$_POST->usedreplyid){
+    sendResponse(400, [] , 'usedreplyid Required !');
 }else{
-    $conn=getConnection();
+
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql1 = "delete from usedreply where usedreplyid='".$usedreplydelete->usedreplyid."'";
-        $result1 = mysqli_query($conn,$sql1);
-
+        $sql1 = $conn->prepare("delete from usedreply where usedreplyid=:usedreplyid");
+        $sql1->bindValue(':usedreplyid',$_POST->usedreplyid);
+        $result1 = $sql1->execute();
+        $sql4 = $conn->prepare("update usedwrite set commentcount = commentcount - 1 where usedid = :inherentid");
+        $sql4->bindValue(':inherentid',$_POST->inherentid);
+        $sql4->execute();
     }
 
     if ($result1) {
@@ -26,7 +29,6 @@ if(!$usedreplydelete->uesdreplyid){
         sendResponse(404, [] ,'User not Registered');
     }
 
-    $conn->close();
 
 }
 ?>

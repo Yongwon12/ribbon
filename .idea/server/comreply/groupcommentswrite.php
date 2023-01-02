@@ -2,72 +2,53 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$groupcommentswrite = json_decode(file_get_contents("php://input"));
+$_POST = json_decode(file_get_contents("php://input"));
 
-if(!$groupcommentswrite->inherentid){
+if(!$_POST->inherentid){
     sendResponse(400, [] , 'inherentid Required !');
 }else {
 
-    $conn = getConnection();
     if ($conn == null) {
         sendResponse(500, $conn, 'Server Connection Error !');
-    } elseif ($groupcommentswrite->inherentid) {
-        if ($groupcommentswrite->inherentid) {
-            $sql4 = "update groupwrite set commentcount = commentcount + 1 where groupid = '" . $groupcommentswrite->inherentid . "'";
-            mysqli_query($conn, $sql4);
-        }
-        $sql1 = "INSERT INTO groupcomments(description,userid,nickname,inherentid,
-                     writedate,profileimage)
-         VALUES ('" . $groupcommentswrite->description . "','" . $groupcommentswrite->userid . "','"
-            . $groupcommentswrite->nickname . "','" . $groupcommentswrite->inherentid . "','"
-            . $groupcommentswrite->writedate . "','" . $groupcommentswrite->profileimage . "')";
-
-        $result1 = mysqli_query($conn, $sql1);
-
-
-
-
-        $sql2 = "select commentcount from groupwrite where groupid = 
-         '".$groupcommentswrite->inherentid."'";
-
-        $result2 = mysqli_query($conn,$sql2);
-        $sql3 = "select groupcommentsid from groupcomments  order by groupcommentsid desc limit 1";
-        $result3 = mysqli_query($conn, $sql3);
-        $row2 = mysqli_fetch_array($result3);
-
-
-        if ($result2) {
-            while ($row1 = mysqli_fetch_array($result2)) {
-                print_r('
-    {
-    "commentcount" : 
-        {
-            "commentcount":"' . $row1[0] . '",
-        "commentid":"' . $row2[0] . '"
-        }
-    }');
-            }
+    } elseif ($_POST->inherentid) {
+        if ($_POST->inherentid) {
+            $sql4 = $conn->prepare("update groupwrite set commentcount = commentcount + 1 where groupid = :inherentid");
+            $sql4->bindValue(':inherentid',$_POST->inherentid);
+            $sql4->execute();
         }
 
+        $sql1 = $conn->prepare("INSERT INTO groupcomments(description,userid,nickname,inherentid,writedate,
+                     profileimage)
+         VALUES (:description,:userid,:nickname,:inherentid,:writedate,:profileimage)");
+        $sql1->bindValue(':description', $_POST->description);
+        $sql1->bindValue(':userid', $_POST->userid);
+        $sql1->bindValue(':nickname', $_POST->nickname);
+        $sql1->bindValue(':inherentid', $_POST->inherentid);
+        $sql1->bindValue(':writedate', $_POST->writedate);
+        $sql1->bindValue(':profileimage', $_POST->profileimage);
+        $sql1->execute();
 
 
 
-        if ($result1) {
-            sendResponse(200, $result1, 'User Registration Successful.');
-        }
-        elseif ($result2) {
-            sendResponse(200, $result2, 'User Registration Successful.');
-        }
-        elseif ($result3) {
-            sendResponse(200, $result3, 'User Registration Successful.');
-        }else {
-            sendResponse(404, [], 'User not Registered');
-        }
-        //close connection
-        $conn->close();
+        $sql2 =$conn->prepare("select commentcount from groupwrite where groupid = :inherentid");
+        $sql2->bindValue(':inherentid',$_POST->inherentid);
+        $sql2->execute();
+
+        $sql3 = $conn->prepare("select groupcommentsid from groupcomments  order by groupcommentsid desc limit 1");
+        $sql3->execute();
+        $row3 = $sql3->fetch(PDO::FETCH_ASSOC);
+        $row2 = $sql2->fetch(PDO::FETCH_ASSOC);
+        $data = array();
+
+        $json2 = json_encode(array('commentcount'=>$row2), JSON_UNESCAPED_UNICODE, JSON_PRETTY_PRINT);
+        print_r($json2);
+        print_r(',');
+        $json3 = json_encode(array('commentsid'=>$row3), JSON_UNESCAPED_UNICODE, JSON_PRETTY_PRINT);
+        print_r($json3);
+
+    }if(!$sql3) {
+        sendResponse(404, [], 'User not Registered');
     }
-
-
 
 
 

@@ -2,68 +2,54 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$individualreplywrite = json_decode(file_get_contents("php://input"));
-if(!$individualreplywrite->inherentid){
+$_POST = json_decode(file_get_contents("php://input"));
+
+if(!$_POST->inherentid){
     sendResponse(400, [] , 'inherentid Required !');
 }else {
 
-    $conn = getConnection();
     if ($conn == null) {
         sendResponse(500, $conn, 'Server Connection Error !');
-    } elseif ($individualreplywrite->inherentid) {
-        if ($individualreplywrite->inherentid) {
-            $sql4 = "update individualwrite set commentcount = commentcount + 1 where individualid = '" . $individualreplywrite->inherentid . "'";
-            mysqli_query($conn, $sql4);
+    } elseif ($_POST->inherentid) {
+        if ($_POST->inherentid) {
+            $sql4 = $conn->prepare("update individualwrite set commentcount = commentcount + 1 where individualid = :inherentid");
+            $sql4->bindValue(':inherentid',$_POST->inherentid);
+            $sql4->execute();
         }
 
-        $sql1 = "INSERT INTO individualreply(description,profileimage,writedate,userid,nickname,
+        $sql1 = $conn->prepare("INSERT INTO individualreply(description,profileimage,writedate,userid,nickname,
                      inherentid,inherentcommentsid)
-         VALUES ('" . $individualreplywrite->description . "','" . $individualreplywrite->profileimage . "','"
-            . $individualreplywrite->writedate . "','" . $individualreplywrite->userid . "','"
-            . $individualreplywrite->nickname . "','" . $individualreplywrite->inherentid . "','" . $individualreplywrite->inherentcommentsid . "')";
-        $result1 = mysqli_query($conn, $sql1);
+         VALUES (:description,:profileimage,:writedate,:userid,:nickname,:categoryid,:inherentid,:inherentcommentsid)");
+        $sql1->bindValue(':description', $_POST->description);
+        $sql1->bindValue(':profileimage', $_POST->profileimage);
+        $sql1->bindValue(':writedate', $_POST->writedate);
+        $sql1->bindValue(':userid', $_POST->userid);
+        $sql1->bindValue(':nickname', $_POST->nickname);
+        $sql1->bindValue(':inherentid', $_POST->inherentid);
+        $sql1->bindValue(':inherentcommentsid', $_POST->inherentcommentsid);
+        $sql1->execute();
 
 
 
+        $sql2 =$conn->prepare("select commentcount from individualwrite where individualid = :inherentid");
+        $sql2->bindValue(':inherentid',$_POST->inherentid);
+        $sql2->execute();
 
-        $sql2 = "select commentcount from individualwrite where individualid = 
-         '" . $individualreplywrite->inherentid . "'";
+        $sql3 = $conn->prepare("select individualreplyid from individualreply  order by individualreplyid desc limit 1");
+        $sql3->execute();
+        $row3 = $sql3->fetch(PDO::FETCH_ASSOC);
+        $row2 = $sql2->fetch(PDO::FETCH_ASSOC);
+        $data = array();
 
-        $result2 = mysqli_query($conn, $sql2);
-        $sql3 = "select individualreplyid from individualreply  order by individualreplyid desc limit 1";
-        $result3 = mysqli_query($conn, $sql3);
-        $row2 = mysqli_fetch_array($result3);
+        $json2 = json_encode(array('replycount'=>$row2), JSON_UNESCAPED_UNICODE, JSON_PRETTY_PRINT);
+        print_r($json2);
+        print_r(',');
+        $json3 = json_encode(array('replyid'=>$row3), JSON_UNESCAPED_UNICODE, JSON_PRETTY_PRINT);
+        print_r($json3);
 
-
-        if ($result2) {
-            while ($row1 = mysqli_fetch_array($result2)) {
-                print_r('
-    {
-    "replycount" : 
-        {
-            "replycount":"' . $row1[0] . '",
-        "replyid":"' . $row2[0] . '"
-        }
-    }');
-            }
-        }
-
-
-
-        if ($result1) {
-            sendResponse(200, $result1, 'User Registration Successful.');
-        }
-        elseif ($result2) {
-            sendResponse(200, $result2, 'User Registration Successful.');
-        }elseif ($result3) {
-            sendResponse(200, $result3, 'User Registration Successful.');
-        }else {
-            sendResponse(404, [], 'User not Registered');
-        }
-        //close connection
-        $conn->close();
+    }if(!$sql3) {
+        sendResponse(404, [], 'User not Registered');
     }
-
 
 
 

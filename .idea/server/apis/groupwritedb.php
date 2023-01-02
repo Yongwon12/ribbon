@@ -1,6 +1,8 @@
 <?php
+basename(include_once('../common/include.php'));
+basename(include_once('../common/encipher.php'));
 
-$sql = "SELECT * FROM groupwrite";
+$sql = $conn->prepare("SELECT * FROM groupwrite");
 
-basename(require_once('../common/databasegroup.php'));
+basename(require_once('../common/databaseboard.php'));
 ?>

@@ -2,18 +2,21 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$commentsdelete = json_decode(file_get_contents("php://input"));
+$_POST = json_decode(file_get_contents("php://input"));
 
-if(!$commentsdelete->commentsid){
-    sendResponse(400, [] , 'categoryid Required !');
+if(!$_POST->groupcommentsid){
+    sendResponse(400, [] , 'groupcommentsid Required !');
 }else{
-    $conn=getConnection();
+
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql1 = "delete from comments where commentsid='".$commentsdelete->commentsid."'";
-        $result1 = mysqli_query($conn,$sql1);
-
+        $sql1 = $conn->prepare("delete from groupcomments where groupcommentsid=:groupcommentsid");
+        $sql1->bindValue(':groupcommentsid',$_POST->groupcommentsid);
+        $result1 = $sql1->execute();
+        $sql4 = $conn->prepare("update groupwrite set commentcount = commentcount - 1 where groupid = :inherentid");
+        $sql4->bindValue(':inherentid',$_POST->inherentid);
+        $sql4->execute();
     }
 
     if ($result1) {
@@ -26,7 +29,6 @@ if(!$commentsdelete->commentsid){
         sendResponse(404, [] ,'User not Registered');
     }
 
-    $conn->close();
 
 }
 ?>

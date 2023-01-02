@@ -2,35 +2,25 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$likeddelete = json_decode(file_get_contents("php://input"));
+$_POST = json_decode(file_get_contents("php://input"));
 
-if(!$likeddelete->categoryid){
+if(!$_POST->categoryid){
     sendResponse(400, [] , 'categoryid Required !');
 }else{
-    $conn=getConnection();
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql1 = "delete from liked where categoryid='".$likeddelete->categoryid."' AND userid='".$likeddelete->userid."' AND inherentid='".$likeddelete->inherentid."'";
-        $result1 = mysqli_query($conn,$sql1);
+        $sql1 = $conn->prepare("delete from liked where categoryid=:categoryid AND userid=:userid AND inherentid=:inherentid");
+        $sql1->bindValue(':categoryid',$_POST->categoryid);
+        $sql1->bindValue(':userid',$_POST->userid);
+        $sql1->bindValue(':inherentid',$_POST->inherentid);
+        $sql1->execute();
 
-        $sql2 = "update boardwrite set likedcount = likedcount - 1 where boardid = '".$likeddelete->inherentid."'";
-        $result2 = mysqli_query($conn, $sql2);
+        $sql2 = $conn->prepare("update boardwrite set likedcount = likedcount - 1 where boardid = :inherentid");
+        $sql2->bindValue(':inherentid',$_POST->inherentid);
+        $sql2->execute();
 
         }
-
-
-        if ($result1) {
-            sendResponse(200, $result1 , 'User Registration Successful.');
-        } elseif($result2) {
-            sendResponse(200, $result2 , 'User Registration Successful.');
-        }
-
-        else{
-            sendResponse(404, [] ,'User not Registered');
-        }
-
-        $conn->close();
 
 }
 ?>

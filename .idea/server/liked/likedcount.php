@@ -2,29 +2,15 @@
 
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
-$conn=getConnection();
-$liked = json_decode(file_get_contents("php://input"));
 
-    $sql3 = "select likedcount from liked left join boardwrite on liked.inherentid=boardwrite.boardid where categoryid = '" . $liked->categoryid . "' AND inherentid = '" . $liked->inherentid . "'";
-    $result3 = mysqli_query($conn, $sql3);
+$_POST = json_decode(file_get_contents("php://input"));
 
-    $row = mysqli_fetch_array($result3);
-    if ($result3) {
-         print_r('
-    {
-    "likedcount" : 
-        {
-            "likedcount":"' . $row[0] . '"
-        }
-    }');
+$sql3 = $conn->prepare("select likedcount from liked left join boardwrite on liked.inherentid=boardwrite.boardid where categoryid = :categoryid AND inherentid = :inherentid");
+$sql3->bindValue(':categoryid',$_POST->categoryid);
+$sql3->bindValue(':inherentid',$_POST->inherentid);
+$sql3->execute();
+$row3 = $sql3->fetch(PDO::FETCH_ASSOC);
+$json1 = json_encode(array("likedcount" => $row3), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+print_r($json1);
 
-    }
-
-
-    else {
-    echo "sql 처리중 에러";
-    echo mysqli_error($conn);
-
-}
-mysqli_close($conn);
 ?>

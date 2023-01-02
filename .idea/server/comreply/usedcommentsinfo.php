@@ -1,28 +1,20 @@
 <?php
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
-$usedcommentsinfo = json_decode(file_get_contents("php://input"));
-$conn = getConnection();
-$sql = "select * from usedcomments where inherentid = '".$usedcommentsinfo->inherentid."'";
-$result = mysqli_query($conn, $sql);
-$sql2 = "select commentcount from usedwrite where usedid = 
-         '".$usedcommentsinfo->inherentid."'";
-$result2= mysqli_query($conn,$sql2);
-$row2 = mysqli_fetch_array($result2);
+$_POST = json_decode(file_get_contents("php://input"));
+$sql = $conn-> prepare("select * from usedcomments where inherentid = :inherentid");
+$sql->bindValue(':inherentid',$_POST->inherentid);
+$result = $sql->execute();
 
-$data = array();
-if ($result)
-{
-    while ($row = mysqli_fetch_array($result))
-    {
-        array_push($data, array('description' => $row[0], 'userid' => $row[1],
-            'nickname'=>$row[2],'inherentid'=>$row[3],'writedate'=>$row[4],
-            'profileimage'=>$row[5],'likedcount'=>$row[6],'usedcommentsid'=>$row[7],'isrecomment'=>$row[8],'commentcount'=>$row2[0]));
-    }
+$sql2 = $conn->prepare("select commentcount from usedwrite where usedid = :inherentid");
+$sql2->bindValue(':inherentid',$_POST->inherentid);
+$result2= $sql2->execute();
 
-    $json = json_encode(array("comment" => $data), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
-    echo $json;
-}
-
-
+$row2 = $sql2->fetch(PDO::FETCH_ASSOC);
+$row = $sql->fetchall(PDO::FETCH_ASSOC);
+$json1 = json_encode(array("commentcount" => $row2), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+print_r($json1);
+print_r(',');
+$json2 = json_encode(array("comment" => $row), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+print_r($json2)
 ?>

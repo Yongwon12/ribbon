@@ -2,18 +2,21 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$individualreplydelete = json_decode(file_get_contents("php://input"));
+$_POST = json_decode(file_get_contents("php://input"));
 
-if(!$individualreplydelete->individualreplyid){
-    sendResponse(400, [] , 'categoryid Required !');
+if(!$_POST->individualreplyid){
+    sendResponse(400, [] , 'individualreplyid Required !');
 }else{
-    $conn=getConnection();
+
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql1 = "delete from individualreply where individualreplyid='".$individualreplydelete->individualreplyid."'";
-        $result1 = mysqli_query($conn,$sql1);
-
+        $sql1 = $conn->prepare("delete from individualreply where individualreplyid=:individualreplyid");
+        $sql1->bindValue(':individualreplyid',$_POST->individualreplyid);
+        $result1 = $sql1->execute();
+        $sql4 = $conn->prepare("update individualwrite set commentcount = commentcount - 1 where individualid = :inherentid");
+        $sql4->bindValue(':inherentid',$_POST->inherentid);
+        $sql4->execute();
     }
 
     if ($result1) {
@@ -26,7 +29,6 @@ if(!$individualreplydelete->individualreplyid){
         sendResponse(404, [] ,'User not Registered');
     }
 
-    $conn->close();
 
 }
 ?>

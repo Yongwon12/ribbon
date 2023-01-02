@@ -1,6 +1,8 @@
 <?php
+basename(include_once('../common/include.php'));
+basename(include_once('../common/encipher.php'));
 
-$sql = "select * from usedwrite";
-basename(require_once('../common/databaseused.php'));
+$sql = $conn->prepare("SELECT * FROM individualwrite");
 
+basename(require_once('../common/databaseboard.php'));
 ?>

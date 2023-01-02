@@ -1,6 +1,6 @@
 <?php
 
-$db_host = '192.168.0.3';
+$db_host = '192.168.0.2';
 $db_name = 'ribbonProject';
 $db_username = 'yongwon2';
 $db_password = 'Dyddnjs3401!';

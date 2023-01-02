@@ -2,42 +2,42 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
+$_POST = json_decode(file_get_contents("php://input"));
 
-//method file_get_contents() get all data send via API call.
-//json_decode() decodes data as json and assign to variable $user.
-$used = json_decode(file_get_contents("php://input"));
-
-//validation whether user data is having name or not. similarly email, password etc.
-if(!$used->id){
+if(!$_POST->id){
     sendResponse(400, [] , 'id Required !');
-}else if(!$used->userid){
+}else if(!$_POST->userid){
     sendResponse(400, [] , 'userid Required !');
 
 }else{
-    //method doEncrypt() of encipher.php which convert plain text to encrypted text.
-    $conn=getConnection();
+
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }else{
-        $sql = "INSERT INTO usedwrite(id,local,title,description,usedimage1,
+        $sql = $conn->prepare("INSERT INTO usedwrite(id,local,title,description,usedimage1,
                       price,userid,writedate,nickname,usedimage2,
                       usedimage3,usedimage4,usedimage5)
-         VALUES ('" . $used->id . "','" . $used->local . "','" . $used->title . "','"
-            . $used->description . "','" . $used->usedimage1 . "','"
-            . $used->price . "','" . $used->userid . "','"
-            . $used->writedate . "','" . $used->nickname . "',
-            '" . $used->usedimage2 . "','" . $used->usedimage3 . "','" . $used->usedimage4 . "',
-            '" . $used->usedimage5 . "')";
-
-
-        $result = $conn->query($sql); //$result = true/false on success or error respectively.
+         VALUES (:id,:local,:title,:description,:usedimage1,:price,:userid,:writedate,:nickname,
+                 :usedimage2,:usedimage3,:usedimage4,:usedimage5)");
+        $sql->bindValue(':id', $_POST->id);
+        $sql->bindValue(':local', $_POST->local);
+        $sql->bindValue(':title', $_POST->title);
+        $sql->bindValue(':description', $_POST->description);
+        $sql->bindValue(':usedimage1', $_POST->usedimage1);
+        $sql->bindValue(':price', $_POST->price);
+        $sql->bindValue(':userid', $_POST->userid);
+        $sql->bindValue(':writedate', $_POST->writedate);
+        $sql->bindValue(':usedimage2', $_POST->usedimage2);
+        $sql->bindValue(':usedimage3', $_POST->usedimage3);
+        $sql->bindValue(':usedimage4', $_POST->usedimage4);
+        $sql->bindValue(':usedimage5', $_POST->usedimage5);
+        $result = $sql->execute();
         if ($result) {
             sendResponse(200, $result , 'User Registration Successful.');
         } else {
             sendResponse(404, [] ,'User not Registered');
         }
-        //close connection
-        $conn->close();
+
     }
 }
 ?>
