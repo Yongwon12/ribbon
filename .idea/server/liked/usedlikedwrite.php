@@ -2,48 +2,34 @@
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
 
-$liked = json_decode(file_get_contents("php://input"));
+$_POST = json_decode(file_get_contents("php://input"));
 
-if(!$liked->inherentid){
+if(!$_POST->inherentid){
     sendResponse(400, [] , 'inherentid Required !');
 }else{
 
-    $conn=getConnection();
     if($conn==null){
         sendResponse(500, $conn, 'Server Connection Error !');
     }elseif ($conn) {
-        $sql1 = "INSERT INTO usedliked(inherentid,userid,categoryid)
-         VALUES ('" . $liked->inherentid . "','" . $liked->userid . "','" . $liked->categoryid . "')";
-        $result1 = mysqli_query($conn, $sql1);
+        $sql1 = $conn->prepare("INSERT INTO usedliked(inherentid,userid,categoryid)
+         VALUES (:inherentid,:userid,:categoryid)");
+        $sql1->bindValue(':inherentid', $_POST->inherentid);
+        $sql1->bindValue(':userid', $_POST->userid);
+        $sql1->bindValue(':categoryid', $_POST->categoryid);
+        $sql1->execute();
 
-        $sql2 = "update usedwrite set likedcount = likedcount + 1 where usedid = '" . $liked->inherentid . "'";
-        $result2 = mysqli_query($conn, $sql2);
-
-        $sql3 = "select likedcount from usedliked left join usedwrite on usedliked.inherentid=usedwrite.usedid where categoryid = '" . $liked->categoryid . "' AND inherentid = '" . $liked->inherentid . "'";
-        $result3 = mysqli_query($conn, $sql3);
-
-        $row = mysqli_fetch_array($result3);
-        if ($result3) {
-            print_r('
-    {
-    "likedcount" : 
-        {
-            "likedcount":"' . $row[0] . '"
-        }
-    }');
-        }
-
-
-        if ($result1) {
-            sendResponse(200, $result1, 'User Registration Successful.');
-        } elseif ($result2) {
-            sendResponse(200, $result2, 'User Registration Successful.');
-        } elseif ($result3) {
-            sendResponse(200, $result3, 'User Registration Successful.');
-        }
-        $conn->close();
+        $sql2 = $conn->prepare("update usedwrite set likedcount = likedcount + 1 where usedid = :inherentid");
+        $sql2->bindValue(':inherentid',$_POST->inherentid);
+        $sql2->execute();
 
     }
+    $sql3 = $conn->prepare("select likedcount from usedliked left join usedwrite on usedliked.inherentid=usedwrite.usedid where categoryid =:categoryid AND inherentid = :inherentid");
+    $sql3->bindValue(':categoryid',$_POST->categoryid);
+    $sql3->bindValue(':inherentid',$_POST->inherentid);
+    $sql3->execute();
 
+    $row3 = $sql3->fetch(PDO::FETCH_ASSOC);
+    $json1 = json_encode(array("likedcount" => $row3), JSON_PRETTY_PRINT + JSON_UNESCAPED_UNICODE);
+    print_r($json1);
 }
 ?>

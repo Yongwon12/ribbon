@@ -9,6 +9,6 @@ if ($sql)
 }
 else
 {
-    sendResponse(400, [], 'sql error');
+    sendResponse(404, [], 'failed');
 }
 ?>

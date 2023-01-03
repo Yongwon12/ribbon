@@ -26,7 +26,7 @@ if(!$_POST->usedcommentsid){
     }
 
     else{
-        sendResponse(404, [] ,'User not Registered');
+        sendResponse(404, [], 'failed');
     }
 
 

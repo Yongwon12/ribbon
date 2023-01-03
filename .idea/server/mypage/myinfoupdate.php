@@ -1,14 +1,21 @@
 <?php
 basename(include_once('../common/encipher.php'));
 basename(include_once('../common/include.php'));
-$conn = getConnection();
 $_POST = json_decode(file_get_contents("php://input"));
 if (!$_POST->id) {
-    echo '껄껄껄껄';
+    sendResponse(400, [], 'not id');
 } elseif($_POST->id) {
-    $sql = "update user set nickname = '" . $_POST->nickname . "',userimage = '" . $_POST->userimage . "',modify_date = '" . $_POST->modify_date . "',bestcategory = '" . $_POST->bestcategory . "',shortinfo = '" . $_POST->shortinfo . "' where id = '" . $_POST->id . "'";
-    $result = mysqli_query($conn,$sql);
-    $conn->close();
+    $sql = $conn->prepare("update user set nickname = :nickname,userimage = :userimage,modify_date = :modify_date,bestcategory = :bestcategory,shortinfo = :shortinfo where id = :id");
+    $sql->bindValue(':nickname',$_POST->nickname);
+    $sql->bindValue(':userimage',$_POST->userimage);
+    $sql->bindValue(':modify_date',$_POST->modify_date);
+    $sql->bindValue(':bestcategory',$_POST->bestcategory);
+    $sql->bindValue(':shortinfo',$_POST->shortinfo);
+    $sql->bindValue(':id',$_POST->id);
+    $sql->execute();
+}
+if (!$sql) {
+    sendResponse(404, [], 'failed');
 }
 
 ?>

@@ -47,7 +47,7 @@ if(!$_POST->inherentid){
         print_r($json3);
 
     }if(!$sql3) {
-        sendResponse(404, [], 'User not Registered');
+        sendResponse(404, [], 'failed');
     }
 
 

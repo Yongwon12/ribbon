@@ -1,13 +1,24 @@
 <?php
 
+basename(include_once('../common/include.php'));
+basename(include_once('../common/encipher.php'));
+$_POST = json_decode(file_get_contents("php://input"));
 
-$sql1 = "SELECT * FROM boardwrite where id = '".$user->id."'";
+$sql = $conn->prepare("SELECT * FROM boardwrite where id = :id");
+$sql->bindValue(':id', $_POST->id);
 basename(require_once('../common/databaseboard.php'));
-$sql2 = "SELECT * FROM groupwrite where id = '".$user->id."'";
+print_r(',');
+$sql = $conn->prepare("SELECT * FROM groupwrite where id = :id");
+$sql->bindValue(':id', $_POST->id);
 basename(require_once('../common/databasegroup.php'));
-$sql3 = "SELECT * FROM individualwrite where id = '".$user->id."'";
+print_r(',');
+$sql = $conn->prepare("SELECT * FROM individualwrite where id = :id");
+$sql->bindValue(':id', $_POST->id);
 basename(require_once('../common/databaseindividual.php'));
-$sql4 = "SELECT * FROM usedwrite where id = '".$user->id."'";
+print_r(',');
+$sql = $conn->prepare("SELECT * FROM usedwrite where id = :id");
+$sql->bindValue(':id', $_POST->id);
 basename(require_once('../common/databaseused.php'));
+
 
 ?>
