@@ -1,8 +1,9 @@
 <?php
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
+basename(require_once('../common/curlfunc.php'));
 
-$replyliked = json_decode(file_get_contents("php://input"));
+$_POST = json_decode(file_get_contents("php://input"));
 
 if(!$replyliked->inherentreplyid){
     sendResponse(400, [] , 'inherentreplyid Required !');

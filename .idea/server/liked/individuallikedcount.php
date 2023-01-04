@@ -2,6 +2,7 @@
 
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
+basename(require_once('../common/curlfunc.php'));
 
 $_POST = json_decode(file_get_contents("php://input"));
 

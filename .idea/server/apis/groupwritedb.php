@@ -4,5 +4,5 @@ basename(include_once('../common/encipher.php'));
 
 $sql = $conn->prepare("SELECT * FROM groupwrite");
 
-basename(require_once('../common/databaseboard.php'));
+basename(require_once('../common/databasegroup.php'));
 ?>

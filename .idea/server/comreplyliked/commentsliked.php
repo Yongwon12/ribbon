@@ -1,8 +1,9 @@
 <?php
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
+basename(require_once('../common/curlfunc.php'));
 
-$commentsliked = json_decode(file_get_contents("php://input"));
+$_POST = json_decode(file_get_contents("php://input"));
 
 if(!$commentsliked->inherentcommentsid){
     sendResponse(400, [] , 'inherentcommentsid Required !');

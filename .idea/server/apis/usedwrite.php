@@ -1,6 +1,7 @@
 <?php
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
+basename(require_once('../common/curlfunc.php'));
 
 $_POST = json_decode(file_get_contents("php://input"));
 
@@ -27,17 +28,14 @@ if(!$_POST->id){
         $sql->bindValue(':price', $_POST->price);
         $sql->bindValue(':userid', $_POST->userid);
         $sql->bindValue(':writedate', $_POST->writedate);
+        $sql->bindValue(':nickname', $_POST->nickname);
         $sql->bindValue(':usedimage2', $_POST->usedimage2);
         $sql->bindValue(':usedimage3', $_POST->usedimage3);
         $sql->bindValue(':usedimage4', $_POST->usedimage4);
         $sql->bindValue(':usedimage5', $_POST->usedimage5);
         $result = $sql->execute();
-        if ($result) {
-            sendResponse(200, $result , 'User Registration Successful.');
-        } else {
-            sendResponse(404, [] ,'User not Registered');
-        }
-
+    }if($result){
+        echo sendResponse(200, [], 'jesus');
     }
 }
 ?>

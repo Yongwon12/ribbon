@@ -1,6 +1,7 @@
 <?php
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
+basename(require_once('../common/curlfunc.php'));
 
 $_POST = json_decode(file_get_contents("php://input"));
 
@@ -18,9 +19,11 @@ if(!$_POST->categoryid){
 
         $sql2 = $conn->prepare("update boardwrite set likedcount = likedcount - 1 where boardid = :inherentid");
         $sql2->bindValue(':inherentid',$_POST->inherentid);
-        $sql2->execute();
+        $result = $sql2->execute();
 
-        }
+        }if ($result) {
+        echo sendResponse(200, $result, 'nice');
+    }
 
 }
 ?>

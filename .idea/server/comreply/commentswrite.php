@@ -1,6 +1,8 @@
 <?php
 basename(include_once('../common/include.php'));
 basename(include_once('../common/encipher.php'));
+basename(require_once('../common/curlfunc.php'));
+
 
 $_POST = json_decode(file_get_contents("php://input"));
 
@@ -31,21 +33,19 @@ if(!$_POST->inherentid){
 
 
 
-        $sql2 =$conn->prepare("select commentcount from boardwrite where boardid = :inherentid");
+        $sql2 =$conn->prepare("select commentcount,commentsid from boardwrite left join comments on boardwrite.boardid = comments.inherentid where boardid = :inherentid order by commentsid desc limit 1;");
         $sql2->bindValue(':inherentid',$_POST->inherentid);
         $sql2->execute();
 
-        $sql3 = $conn->prepare("select commentsid from comments  order by commentsid desc limit 1");
-        $sql3->execute();
-        $row3 = $sql3->fetch(PDO::FETCH_ASSOC);
+        #$sql3 = $conn->prepare("select commentsid from comments  order by commentsid desc limit 1");
+        #$sql3->execute();
+        #$row3 = $sql3->fetch(PDO::FETCH_ASSOC);
         $row2 = $sql2->fetch(PDO::FETCH_ASSOC);
-        $data = array();
-
         $json2 = json_encode(array('commentcount'=>$row2), JSON_UNESCAPED_UNICODE, JSON_PRETTY_PRINT);
         print_r($json2);
-        print_r(',');
-        $json3 = json_encode(array('commentsid'=>$row3), JSON_UNESCAPED_UNICODE, JSON_PRETTY_PRINT);
-        print_r($json3);
+       # print_r(',');
+       # $json3 = json_encode(array('commentsid'=>$row3), JSON_UNESCAPED_UNICODE, JSON_PRETTY_PRINT);
+       # print_r($json3);
 
         }if(!$sql3) {
         sendResponse(404, [], 'failed');
